@@ -6,6 +6,7 @@
     */
 
     require_once "src/Category.php";
+    require_once "src/Task.php";
 
     $server = 'mysql:host=localhost:8889;dbname=to_do_test';
     $username = 'root';
@@ -18,12 +19,13 @@
         protected function tearDown()
         {
           Category::deleteAll();
+          Task::deleteAll();
         }
 
         function testGetName()
         {
             //Arrange
-            $name = "Work stuff";
+            $name = "Kitchen chores";
             $test_category = new Category($name);
 
             //Act
@@ -33,17 +35,18 @@
             $this->assertEquals($name, $result);
         }
 
-       function testSave()
+        function testSetName()
         {
             //Arrange
-            $name = "Work stuff";
+            $name = "Kitchen chores";
             $test_category = new Category($name);
 
             //Act
-            $executed = $test_category->save();
+            $test_category->setName("Home chores");
+            $result = $test_category->getName();
 
-            // Assert
-            $this->assertTrue($executed, "Category not successfully saved to database");
+            //Assert
+            $this->assertEquals("Home chores", $result);
         }
 
         function testGetId()
@@ -60,13 +63,103 @@
             $this->assertEquals(true, is_numeric($result));
         }
 
+        function testAddTask()
+        {
+            //Arrange
+            $name = "Work stuff";
+            $test_category = new Category($name);
+            $test_category->save();
+
+            $description = "File reports";
+            $test_task = new Task($description);
+            $test_task->save();
+
+            //Act
+            $test_category->addTask($test_task);
+
+            //Assert
+            $this->assertEquals($test_category->getTasks(), [$test_task]);
+        }
+
+        function testGetTasks()
+        {
+            //Arrange
+            $name = "Home stuff";
+            $test_category = new Category($name);
+            $test_category->save();
+
+            $description = "Wash the dog";
+            $test_task = new Task($description);
+            $test_task->save();
+
+            $description2 = "Take out the trash";
+            $test_task2 = new Task($description2);
+            $test_task2->save();
+
+            //Act
+            $test_category->addTask($test_task);
+            $test_category->addTask($test_task2);
+
+            //Assert
+            $this->assertEquals($test_category->getTasks(), [$test_task, $test_task2]);
+        }
+
+        function testSave()
+        {
+            //Arrange
+            $name = "Work stuff";
+            $test_category = new Category($name);
+
+            //Act
+            $executed = $test_category->save();
+
+            // Assert
+            $this->assertTrue($executed, "Category not successfully saved to database");
+        }
+
+        function testUpdate()
+        {
+            //Arrange
+            $name = "Work stuff";
+            $test_category = new Category($name);
+            $test_category->save();
+
+            $new_name = "Home stuff";
+
+            //Act
+            $test_category->update($new_name);
+
+            //Assert
+            $this->assertEquals("Home stuff", $test_category->getName());
+        }
+
+        function testDeleteCategory()
+        {
+            //Arrange
+            $name = "Work stuff";
+            $test_category = new Category($name);
+            $test_category->save();
+
+            $name2 = "Home stuff";
+            $test_category2 = new Category($name2);
+            $test_category2->save();
+
+
+            //Act
+            $test_category->delete();
+
+            //Assert
+            $this->assertEquals([$test_category2], Category::getAll());
+        }
+
         function testGetAll()
         {
             //Arrange
             $name = "Work stuff";
-            $name_2 = "Home stuff";
             $test_category = new Category($name);
             $test_category->save();
+
+            $name_2 = "Home stuff";
             $test_category_2 = new Category($name_2);
             $test_category_2->save();
 
@@ -81,9 +174,10 @@
         {
             //Arrange
             $name = "Wash the dog";
-            $name_2 = "Home stuff";
             $test_category = new Category($name);
             $test_category->save();
+
+            $name_2 = "Home stuff";
             $test_category_2 = new Category($name_2);
             $test_category_2->save();
 
@@ -99,9 +193,10 @@
         {
             //Arrange
             $name = "Wash the dog";
-            $name2 = "Home stuff";
             $test_category = new Category($name);
             $test_category->save();
+
+            $name2 = "Home stuff";
             $test_category_2 = new Category($name2);
             $test_category_2->save();
 

@@ -25,9 +25,18 @@
             return $this->id;
         }
 
+        function addTask($task)
+        {
+            $executed = $GLOBALS['DB']->exec("INSERT INTO categories_tasks (category_id, task_id) VALUES ({$this->getId()}, {$task->getId()});");
+            if ($executed) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
         function save()
         {
-
             $executed = $GLOBALS['DB']->exec("INSERT INTO categories (category) VALUES ('{$this->getName()}')");
             if ($executed) {
                  $this->id= $GLOBALS['DB']->lastInsertId();
@@ -35,6 +44,27 @@
             } else {
                  return false;
             }
+        }
+
+        function update($new_name)
+        {
+            $executed = $GLOBALS['DB']->exec("UPDATE categories SET category = '{$new_name}' WHERE id = {$this->getId()};");
+            if ($executed) {
+                $this->setName($new_name);
+                return true;
+            } else {
+                return false;
+           }
+        }
+
+        function delete()
+        {
+            $executed = $GLOBALS['DB']->exec("DELETE FROM categories WHERE id = {$this->getId()};");
+            if ($executed) {
+                return true;
+            } else {
+                return false;
+          }
         }
 
         static function getAll()
@@ -48,6 +78,22 @@
                 array_push($categories, $new_category);
             }
             return $categories;
+        }
+
+        function getTasks()
+        {
+            $tasks = array();
+            $returned_tasks = $GLOBALS['DB']->query("SELECT * FROM tasks WHERE category_id = {$this->getId()};");
+            foreach($returned_tasks as $task) {
+                $description = $task['description'];
+                $task_id = $task['id'];
+                $category_id = $task['category_id'];
+
+                $new_task = new Task($description, $category_id, $task_id);
+
+                array_push($tasks, $new_task);
+            }
+            return $tasks;
         }
 
         static function deleteAll()
