@@ -3,12 +3,14 @@
     {
         private $description;
         private $category_id;
+        private $due_date;
         private $id;
 
-        function __construct($description, $category_id, $id = null)
+        function __construct($description, $category_id, $due_date, $id = null)
         {
             $this->description = $description;
             $this->category_id = $category_id;
+            $this->due_date = $due_date;
             $this->id = $id;
         }
 
@@ -32,9 +34,19 @@
             return $this->category_id;
         }
 
+        function setDueDate($new_due_date)
+        {
+            $this->due_date = (string) $new_due_date;
+        }
+
+        function getDueDate()
+        {
+            return $this->due_date;
+        }
+
         function save()
         {
-            $executed = $GLOBALS['DB']->exec("INSERT INTO tasks (description, category_id) VALUES ('{$this->getDescription()}', {$this->getCategoryId()})");
+            $executed = $GLOBALS['DB']->exec("INSERT INTO tasks (description, category_id, due_date) VALUES ('{$this->getDescription()}', {$this->getCategoryId()},'{$this->getDueDate()}')");
             if ($executed) {
                 $this->id = $GLOBALS['DB']->lastInsertId();
                 return true;
@@ -50,8 +62,9 @@
             foreach($returned_tasks as $task) {
                 $description = $task['description'];
                 $category_id = $task['category_id'];
+                $due_date = $task['due_date'];
                 $id = $task['id'];
-                $new_task = new Task($description, $category_id, $id);
+                $new_task = new Task($description, $category_id, $due_date, $id);
                 array_push($tasks, $new_task);
             }
             return $tasks;
@@ -75,9 +88,10 @@
             foreach ($returned_tasks as $task) {
                 $task_description = $task['description'];
                 $category_id = $task['category_id'];
+                $due_date = $task['due_date'];
                 $task_id = $task['id'];
                 if ($task_id == $search_id) {
-                    $found_task = new Task($task_description, $category_id, $task_id);
+                    $found_task = new Task($task_description, $category_id, $due_date, $task_id);
                 }
             }
             return $found_task;

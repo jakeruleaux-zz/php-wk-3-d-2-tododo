@@ -87,13 +87,16 @@
             $name = "Home stuff";
             $test_category = new Category($name);
             $test_category->save();
+            $category_id = $test_category->getId();
 
             $description = "Wash the dog";
-            $test_task = new Task($description, $test_category->getId());
+            $due_date = 'July 4';
+            $test_task = new Task($description, $category_id, $due_date);
             $test_task->save();
 
             $description2 = "Take out the trash";
-            $test_task2 = new Task($description2, $test_category->getId());
+            $due_date2 = 'July 6';
+            $test_task2 = new Task($description2, $category_id, $due_date2);
             $test_task2->save();
 
             //Act
