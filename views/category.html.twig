@@ -4,14 +4,15 @@
     </head>
     <body>
         <h1>{{ category.getName }}</h1>
-
         {% if tasks is not empty %}
             <p>Here are the tasks:</p>
             <ul>
                 {% for task in tasks %}
-                    <li>{{ task.getDescription }}</li>
+                    <li>{{ task.getDescription }} | Due: {{ task.getDueDate }}</li>
                 {% endfor %}
             </ul>
+        {% else %}
+            <p>There are no tasks in the {{ category.getName }} category.</p>
         {% endif %}
 
         <h4>Add a Task</h4>
@@ -19,8 +20,14 @@
             <input id='category_id' name='category_id' type='hidden' value='{{ category.getId() }}'>
             <label for='description'>Task Description</label>
             <input id='description' name='description' type='text'>
-
+            <label for="due-date">Set Do Date!</label>
+            <input type="text" name="due-date" id="due-date">
             <button type='submit'>Add Task</button>
         </form>
+        <form action="/empty_category" method="post">
+            <input id='category_id' name='category_id' type='hidden' value='{{ category.getId() }}'>
+            <button type="submit" class="btn">:()</button>
+        </form>
+        <p><a href='/'>Home</a></p>
     </body>
 </html>

@@ -110,7 +110,7 @@
 
         function delete()
         {
-            $executed = $GLOBALS['DB']->exec("DELETE FROM tasks WHERE id = {$this->getId()};");
+            $executed = $GLOBALS['DB']->exec("DELETE FROM tasks WHERE category_id = {$this->getCategoryId()};");
              if ($executed) {
                 return true;
             } else {
