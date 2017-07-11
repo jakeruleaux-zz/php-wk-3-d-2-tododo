@@ -20,6 +20,11 @@
             return $this->name;
         }
 
+        function setId()
+        {
+            $this->id = intval($id);
+        }
+
         function getId()
         {
             return $this->id;

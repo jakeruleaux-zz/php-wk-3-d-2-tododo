@@ -63,23 +63,23 @@
             $this->assertEquals(true, is_numeric($result));
         }
 
-        function testAddTask()
-        {
-            //Arrange
-            $name = "Work stuff";
-            $test_category = new Category($name);
-            $test_category->save();
-
-            $description = "File reports";
-            $test_task = new Task($description);
-            $test_task->save();
-
-            //Act
-            $test_category->addTask($test_task);
-
-            //Assert
-            $this->assertEquals($test_category->getTasks(), [$test_task]);
-        }
+        // function testAddTask()
+        // {
+        //     //Arrange
+        //     $name = "Work stuff";
+        //     $test_category = new Category($name);
+        //     $test_category->save();
+        //
+        //     $description = "File reports";
+        //     $test_task = new Task($description, $name);
+        //     $test_task->save();
+        //
+        //     //Act
+        //     $test_category->addTask($test_task);
+        //
+        //     //Assert
+        //     $this->assertEquals($test_category->getTasks(), [$test_task]);
+        // }
 
         function testGetTasks()
         {
@@ -89,11 +89,11 @@
             $test_category->save();
 
             $description = "Wash the dog";
-            $test_task = new Task($description);
+            $test_task = new Task($description, $test_category->getId());
             $test_task->save();
 
             $description2 = "Take out the trash";
-            $test_task2 = new Task($description2);
+            $test_task2 = new Task($description2, $test_category->getId());
             $test_task2->save();
 
             //Act

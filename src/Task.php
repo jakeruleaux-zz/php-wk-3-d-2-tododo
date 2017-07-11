@@ -34,7 +34,7 @@
 
         function save()
         {
-            $executed = $GLOBALS['DB']->exec("INSERT INTO tasks (description) VALUES ('{$this->getDescription()}');");
+            $executed = $GLOBALS['DB']->exec("INSERT INTO tasks (description, category_id) VALUES ('{$this->getDescription()}', {$this->getCategoryId()})");
             if ($executed) {
                 $this->id = $GLOBALS['DB']->lastInsertId();
                 return true;
@@ -49,6 +49,7 @@
             $tasks = array();
             foreach($returned_tasks as $task) {
                 $description = $task['description'];
+                $category_id = $task['category_id'];
                 $id = $task['id'];
                 $new_task = new Task($description, $category_id, $id);
                 array_push($tasks, $new_task);
@@ -84,7 +85,7 @@
 
         function update($new_description)
         {
-            $executed = $GLOBALS['DB']->exec("UPDATE tasks SET name = '{$new_description}' WHERE id = {$this->getId()};");
+            $executed = $GLOBALS['DB']->exec("UPDATE tasks SET description = '{$new_description}' WHERE id = {$this->getId()};");
             if ($executed) {
                $this->setDescription($new_description);
                return true;
@@ -95,7 +96,7 @@
 
         function delete()
         {
-            $GLOBALS['DB']->exec("DELETE FROM tasks WHERE id = {$this->getId()};");
+            $executed = $GLOBALS['DB']->exec("DELETE FROM tasks WHERE id = {$this->getId()};");
              if ($executed) {
                 return true;
             } else {

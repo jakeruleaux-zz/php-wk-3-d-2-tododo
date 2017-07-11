@@ -31,7 +31,7 @@
         $task = new Task($description, $category_id, $id = null);
         $task->save();
         $category = Category::find($category_id);
-        var_dump($category->getTasks());
+        // var_dump($category->getTasks());
         return $app['twig']->render('category.html.twig', array('category' => $category, 'tasks' => $category->getTasks()));
     });
 
