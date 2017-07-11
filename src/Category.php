@@ -28,7 +28,7 @@
         function save()
         {
 
-            $executed = $GLOBALS['DB']->exec("INSERT INTO categories (name) VALUES ('{$this->getName()}')");
+            $executed = $GLOBALS['DB']->exec("INSERT INTO categories (category) VALUES ('{$this->getName()}')");
             if ($executed) {
                  $this->id= $GLOBALS['DB']->lastInsertId();
                  return true;
@@ -42,7 +42,7 @@
             $returned_categories = $GLOBALS['DB']->query("SELECT * FROM categories;");
             $categories = array();
             foreach($returned_categories as $category) {
-                $name = $category['name'];
+                $name = $category['category'];
                 $id = $category['id'];
                 $new_category = new Category($name, $id);
                 array_push($categories, $new_category);
@@ -62,7 +62,7 @@
             $returned_categories->bindParam(':id', $search_id, PDO::PARAM_STR);
             $returned_categories->execute();
             foreach($returned_categories as $category) {
-                $category_name = $category['name'];
+                $category_name = $category['category'];
                 $category_id = $category['id'];
                 if ($category_id == $search_id) {
                   $found_category = new Category($category_name, $category_id);
