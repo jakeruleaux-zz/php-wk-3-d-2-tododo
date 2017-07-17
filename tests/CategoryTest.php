@@ -59,7 +59,7 @@
             $test_category->save();
 
             //Act
-            $result = $testTask->getId();
+            $result = $test_category->getId();
 
             //Assert
             $this->assertTrue(is_numeric($result));

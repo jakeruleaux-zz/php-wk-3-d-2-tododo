@@ -91,7 +91,7 @@
             $returned_categories->bindParam(':id', $search_id, PDO::PARAM_STR);
             $returned_categories->execute();
             foreach($returned_categories as $category) {
-                $name = $category['name'];
+                $name = $category['category'];
                 $id = $category['id'];
                 if ($id == $search_id) {
                   $found_category = new Category($name, $id);

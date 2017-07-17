@@ -36,7 +36,7 @@
             }
         }
 
-        descrepancies
+    
 
         static function getAll()
         {
