@@ -1,0 +1,32 @@
+<html>
+<head>
+    <title>To Do List</title>
+</head>
+<body>
+    <h1>{{ task.getDescription }}</h1>
+
+    {% if categories is not empty %}
+        <p>Here are the categories for this task:</p>
+        <ul>
+            {% for category in categories %}
+                <li>{{ category.getName }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h4>Add a category to this task:</h4>
+<!-- maybe try to change this form to add task -->
+    <form action='/add_categories' method='post'>
+        <input id="task_id" name="task_id" type="hidden" value="{{ task.getId }}">
+        <label for="category_id">Select a category</label>
+        <select id='category_id' name='category_id' type='text'>
+          {% for category in all_categories %}
+            <option value="{{ category.getId }}"> {{ category.getName }} </option>
+          {% endfor %}
+        </select>
+        <button type='submit'>Add category</button>
+    </form>
+
+    <p><a href='/'>Home</a></p>
+</body>
+</html>
