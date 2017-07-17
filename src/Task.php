@@ -2,8 +2,8 @@
     class Task
     {
         private $description;
-        private $id;
         private $due_date;
+        private $id;
 
         function __construct($description, $due_date, $id = null)
         {
@@ -74,9 +74,10 @@
             $returned_tasks->execute();
             foreach($returned_tasks as $task) {
                 $description = $task['description'];
+                $due_date = $task['due_date'];
                 $id = $task['id'];
                 if ($id == $search_id) {
-                   $found_task = new Task($description, $id);
+                   $found_task = new Task($description, $due_date, $id);
                 }
             }
             return $found_task;

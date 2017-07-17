@@ -2,8 +2,11 @@
     require_once __DIR__."/../vendor/autoload.php";
     require_once __DIR__."/../src/Task.php";
     require_once __DIR__."/../src/Category.php";
+    use Symfony\Component\Debug\Debug;
+    Debug::enable();
 
     $app = new Silex\Application();
+    $app['debug'] = true;
 
     $server = 'mysql:host=localhost:8889;dbname=to_do';
     $username = 'root';
@@ -30,16 +33,6 @@
         return $app['twig']->render('tasks.html.twig', array('tasks' => Task::getAll()));
     });
 
-    // $app->post("/tasks", function() use ($app) {
-    //     $description = $_POST['description'];
-    //     $category_id = $_POST['category_id'];
-    //     $due_date = $_POST['due-date'];
-    //     $task = new Task($description, $category_id, $due_date, $id = null);
-    //     $task->save();
-    //     $category = Category::find($category_id);
-    //     // var_dump($category->getTasks());
-    //     return $app['twig']->render('category.html.twig', array('category' => $category, 'tasks' => $category->getTasks(), 'due-date' => $due_date));
-    // });
 
     $app->post("/tasks", function() use ($app) {
         $description = $_POST['description'];
@@ -92,7 +85,17 @@
         return $app['twig']->render('task.html.twig', array('task' => $task, 'tasks' => Task::getAll(), 'categories' => $task->getCategories(), 'all_categories' => Category::getAll()));
     });
 
-
+    // $app->get("/categories/{id}/edit", function($id) use ($app) {
+    //     $category = Category::find($id);
+    //     return $app['twig']->render('edit_categories.html.twig', array('category' => $category));
+    // });
+    //
+    // $app->patch("/category/{id}", function($id) use ($app) {
+    //       $category = $_POST['name'];
+    //       $category = Category::find($id);
+    //       $category->update($category);
+    //       return $app['twig']->render('category.html.twig', array('category' => $category, 'tasks' => $category->getTasks()));
+    //   });
 
 
     $app->post("/delete_tasks", function() use ($app) {
